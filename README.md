@@ -39,7 +39,7 @@
 * [Debug Terminal Output Samples](#debug-terminal-output-samples)
   * [1. STM32_MultipleRandomServos on NUCLEO_F767ZI](#1-stm32_multiplerandomservos-on-nucleo_f767zi)
   * [2. STM32_MultipleRandomServos on NUCLEO_H743ZI2](#2-stm32_multiplerandomservos-on-nucleo_h743zi2)
-  * [3. STM32_MultipleRandomServos on NUCLEO_L552ZE_Q](#3-stm32_multiplerandomservos-on-nucleo_l552ze_q)
+  * [3. STM32_ISR_MultiServos on NUCLEO_L552ZE_Q](#3-stm32_isr_multiservos-on-nucleo_l552ze_q)
 * [Debug](#debug)
 * [Troubleshooting](#troubleshooting)
 * [Releases](#releases)
@@ -88,14 +88,8 @@ This library enables you to use `1 Hardware Timer` on an STM32F/L/H/G/WB/MP1-bas
 
 
 ### Currently supported Boards
-
-1. **STM32 boards with built-in Ethernet LAN8742A** such as :
-
-  - **Nucleo-144 (F429ZI, F767ZI, NUCLEO_H743ZI2, NUCLEO_L552ZE_Q)**
-  - **Discovery (STM32F746G-DISCOVERY)**
-  - **All STM32 boards (STM32F/L/H/G/WB/MP1) with 32K+ Flash, with Built-in Ethernet**
-  
-2. **STM32F/L/H/G/WB/MP1 boards (with 32+K Flash) running W5x00 or ENC28J60 shields)**
+ 
+1. **STM32F/L/H/G/WB/MP1 boards (with 32+K Flash)**
 
 - Nucleo-144
 - Nucleo-64
