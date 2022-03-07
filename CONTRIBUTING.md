@@ -14,8 +14,8 @@ If you don't find anything, please [open a new issue](https://github.com/khoih-p
 
 Please ensure to specify the following:
 
-* Arduino IDE version (e.g. 1.8.15) or Platform.io version
-* `STM32` Core Version (e.g. STM32 core v2.0.0)
+* Arduino IDE version (e.g. 1.8.19) or Platform.io version
+* `STM32` Core Version (e.g. STM32 core v2.2.0)
 * Contextual information (e.g. what you were trying to achieve)
 * Simplest possible steps to reproduce
 * Anything that might be relevant in your opinion, such as:
@@ -26,10 +26,10 @@ Please ensure to specify the following:
 ### Example
 
 ```
-Arduino IDE version: 1.8.15
-STM32 Core Version 2.0.0
-OS: Ubuntu 20.04 LTS
-Linux xy-Inspiron-3593 5.4.0-81-generic #91-Ubuntu SMP Thu Jul 15 19:09:17 UTC 2021 x86_64 x86_64 x86_64 GNU/Linux
+Arduino IDE version: 1.8.19
+STM32 Core Version 2.2.0
+OS: Ubuntu 21.04 LTS
+Linux kh-Inspiron-3593 5.13.0-30-generic #33-Ubuntu SMP Fri Feb 4 17:03:31 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
 
 Context:
 I encountered a crash while trying to use the Timer Interrupt.
@@ -50,3 +50,4 @@ There are usually some outstanding feature requests in the [existing issues list
 ### Sending Pull Requests
 
 Pull Requests with changes and fixes are also welcome!
+

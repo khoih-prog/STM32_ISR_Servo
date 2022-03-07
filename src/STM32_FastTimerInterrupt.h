@@ -13,11 +13,12 @@
   Based on BlynkTimer.h
   Author: Volodymyr Shymanskyy
 
-  Version: 1.0.0
+  Version: 1.1.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.0.0   K Hoang      15/08/2021 Initial coding for STM32F/L/H/G/WB/MP1
+  1.1.0   K Hoang      06/03/2022 Convert to `h-only` style. Optimize code by using passing by `reference`
  *****************************************************************************************************************************/
 
 #pragma once
@@ -74,7 +75,7 @@ class STM32FastTimerInterrupt
 
     // frequency (in hertz)
     // No params and duration now. To be added in the future by adding similar functions here or to STM32-hal-timer.c
-    bool setFrequency(float frequency, stm32_timer_callback callback)
+    bool setFrequency(const float& frequency, stm32_timer_callback callback)
     {
       // select timer frequency is 1MHz for better accuracy. We don't use 16-bit prescaler for now.
       // Will use later if very low frequency is needed.
@@ -96,7 +97,7 @@ class STM32FastTimerInterrupt
 
     // interval (in microseconds) and duration (in milliseconds). Duration = 0 or not specified => run indefinitely
     // No params and duration now. To be addes in the future by adding similar functions here or to STM32-hal-timer.c
-    bool attachInterruptInterval(unsigned long interval, stm32_timer_callback callback)
+    bool attachInterruptInterval(const unsigned long& interval, stm32_timer_callback callback)
     {
       return setFrequency( (float) ( 1000000.0f / interval), callback);
     }

@@ -6,24 +6,26 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
 [![GitHub issues](https://img.shields.io/github/issues/khoih-prog/STM32_ISR_Servo.svg)](http://github.com/khoih-prog/STM32_ISR_Servo/issues)
 
-<a href="https://www.buymeacoffee.com/khoihprog6" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 50px !important;width: 181px !important;" ></a>
+<a href="https://www.buymeacoffee.com/khoihprog6" title="Donate to my libraries using BuyMeACoffee"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Donate to my libraries using BuyMeACoffee" style="height: 50px !important;width: 181px !important;" ></a>
+<a href="https://www.buymeacoffee.com/khoihprog6" title="Donate to my libraries using BuyMeACoffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-orange.svg?logo=buy-me-a-coffee&logoColor=FFDD00" style="height: 20px !important;width: 200px !important;" ></a>
 
 ---
 ---
 
 ## Table of Contents
 
+* [Important Change from v1.1.0](#Important-Change-from-v110)
 * [Why do we need this STM32_ISR_Servo library](#why-do-we-need-this-stm32_isr_servo-library)
   * [Features](#features)
   * [Important Notes about using ISR](#important-notes-about-using-isr)
   * [Currently supported Boards](#currently-supported-boards)
-* [Changelog](#changelog)
-  * [Releases v1.0.0](#releases-v100)
+* [Changelog](changelog.md)
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
   * [Use Arduino Library Manager](#use-arduino-library-manager)
   * [Manual Install](#manual-install)
   * [VS Code & PlatformIO](#vs-code--platformio)
+* [HOWTO Fix `Multiple Definitions` Linker Error](#howto-fix-multiple-definitions-linker-error)
 * [More useful Information](#more-useful-information)
   * [STM32 Hardware Timers](#stm32-hardware-timers)
   * [New functions](#new-functions)
@@ -36,15 +38,14 @@
   * [ 4. ISR_MultiServos](examples/ISR_MultiServos)
   * [ 5. MultipleRandomServos](examples/MultipleRandomServos)
   * [ 6. MultipleServos](examples/MultipleServos)
+  * [ 7. multiFileProject](examples/multiFileProject) **New**
 * [Example STM32_ISR_MultiServos](#example-stm32_isr_multiservos)
-  * [1. File STM32_ISR_MultiServos.ino](#1-file-stm32_isr_multiservosino)
 * [Debug Terminal Output Samples](#debug-terminal-output-samples)
   * [1. STM32_MultipleRandomServos on NUCLEO_F767ZI](#1-stm32_multiplerandomservos-on-nucleo_f767zi)
   * [2. STM32_MultipleRandomServos on NUCLEO_H743ZI2](#2-stm32_multiplerandomservos-on-nucleo_h743zi2)
   * [3. STM32_ISR_MultiServos on NUCLEO_L552ZE_Q](#3-stm32_isr_multiservos-on-nucleo_l552ze_q)
 * [Debug](#debug)
 * [Troubleshooting](#troubleshooting)
-* [Releases](#releases)
 * [Issues](#issues)
 * [TO DO](#to-do)
 * [DONE](#done)
@@ -53,6 +54,12 @@
 * [License](#license)
 * [Copyright](#copyright)
 
+---
+---
+
+### Important Change from v1.1.0
+
+Please have a look at [HOWTO Fix `Multiple Definitions` Linker Error](#howto-fix-multiple-definitions-linker-error)
 
 ---
 ---
@@ -110,22 +117,12 @@ This library enables you to use `1 Hardware Timer` on an STM32F/L/H/G/WB/MP1-bas
 ---
 ---
 
-## Changelog
-
-### Releases v1.0.0
-
-1. Basic 16 ISR-based servo controllers using 1 hardware timer for STM32F/L/H/G/WB/MP1-based board
-2. Tested with **STM32L5 (NUCLEO_L552ZE_Q)** and **STM32H7 (NUCLEO_H743ZI2)**
-
-
----
----
-
 ## Prerequisites
 
 1. [`Arduino IDE 1.8.19+` for Arduino](https://github.com/arduino/Arduino). [![GitHub release](https://img.shields.io/github/release/arduino/Arduino.svg)](https://github.com/arduino/Arduino/releases/latest)
 2. [`Arduino Core for STM32 v2.2.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32F/L/H/G/WB/MP1 boards. [![GitHub release](https://img.shields.io/github/release/stm32duino/Arduino_Core_STM32.svg)](https://github.com/stm32duino/Arduino_Core_STM32/releases/latest)
 
+---
 ---
 
 ## Installation
@@ -148,8 +145,35 @@ Another way to install is to:
 
 1. Install [VS Code](https://code.visualstudio.com/)
 2. Install [PlatformIO](https://platformio.org/platformio-ide)
-3. Install [**STM32_ISR_Servo** library](https://platformio.org/lib/show/12702/STM32_ISR_Servo) by using [Library Manager](https://platformio.org/lib/show/12702/STM32_ISR_Servo/installation). Search for **STM32_ISR_Servo** in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
+3. Install [**STM32_ISR_Servo** library](https://registry.platformio.org/libraries/khoih-prog/STM32_ISR_Servo) by using [Library Manager](https://registry.platformio.org/libraries/khoih-prog/STM32_ISR_Servo/installation). Search for **STM32_ISR_Servo** in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
 4. Use included [platformio.ini](platformio/platformio.ini) file from examples to ensure that all dependent libraries will installed automatically. Please visit documentation for the other options and examples at [Project Configuration File](https://docs.platformio.org/page/projectconf.html)
+
+---
+---
+
+### HOWTO Fix `Multiple Definitions` Linker Error
+
+The current library implementation, using `xyz-Impl.h` instead of standard `xyz.cpp`, possibly creates certain `Multiple Definitions` Linker error in certain use cases.
+
+You can include this `.hpp` file
+
+```
+// Can be included as many times as necessary, without `Multiple Definitions` Linker Error
+#include "STM32_ISR_Servo.hpp"     //https://github.com/khoih-prog/STM32_ISR_Servo
+```
+
+in many files. But be sure to use the following `.h` file **in just 1 `.h`, `.cpp` or `.ino` file**, which must **not be included in any other file**, to avoid `Multiple Definitions` Linker Error
+
+```
+// To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
+#include "STM32_ISR_Servo.h"           //https://github.com/khoih-prog/STM32_ISR_Servo
+```
+
+Check the new [**multiFileProject** example](examples/multiFileProject) for a `HOWTO` demo.
+
+Have a look at the discussion in [Different behaviour using the src_cpp or src_h lib #80](https://github.com/khoih-prog/ESPAsync_WiFiManager/discussions/80)
+
+
 
 ---
 ---
@@ -300,119 +324,9 @@ This non-being-blocked important feature is absolutely necessary for mission-cri
 
 How to use:
 
-```
-#if !( defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)  ||defined(STM32F4) || defined(STM32F7) || \
-       defined(STM32L0) || defined(STM32L1) || defined(STM32L4) || defined(STM32H7)  ||defined(STM32G0) || defined(STM32G4) || \
-       defined(STM32WB) || defined(STM32MP1) || defined(STM32L5))
-  #error This code is designed to run on STM32F/L/H/G/WB/MP1 platform! Please check your Tools->Board setting.
-#endif
 
-#define TIMER_INTERRUPT_DEBUG       0
-#define ISR_SERVO_DEBUG             1
+https://github.com/khoih-prog/STM32_ISR_Servo/blob/46cbae9bcb009e9ef2153bf8466437a336529f7d/examples/STM32_MultipleServos/STM32_MultipleServos.ino#L42-L153
 
-#include "STM32_ISR_Servo.h"
-
-// Default is TIMER_SERVO (TIM7 for many boards)
-#define USE_STM32_TIMER_NO          TIMER_SERVO
-
-// Published values for SG90 servos; adjust if needed
-#define MIN_MICROS        800  //544
-#define MAX_MICROS        2450
-
-#define SERVO_PIN_1       D1
-#define SERVO_PIN_2       D2
-#define SERVO_PIN_3       D3
-#define SERVO_PIN_4       D4
-#define SERVO_PIN_5       D5
-#define SERVO_PIN_6       D6
-
-typedef struct
-{
-  int     servoIndex;
-  uint8_t servoPin;
-} ISR_servo_t;
-
-#if ( defined(STM32L0) || defined(STM32L1) || defined(STM32L4) || defined(STM32L5) )
-
-  #define NUM_SERVOS        3
-  
-  ISR_servo_t ISR_servo[NUM_SERVOS] =
-  {
-    { -1, SERVO_PIN_1 }, { -1, SERVO_PIN_2 }, { -1, SERVO_PIN_3 }
-  };
-
-#else
-
-  #define NUM_SERVOS        6
-
-  ISR_servo_t ISR_servo[NUM_SERVOS] =
-  {
-    { -1, SERVO_PIN_1 }, { -1, SERVO_PIN_2 }, { -1, SERVO_PIN_3 }, { -1, SERVO_PIN_4 }, { -1, SERVO_PIN_5 }, { -1, SERVO_PIN_6 }
-  };
-
-#endif
-
-void setup()
-{
-  Serial.begin(115200);
-  while (!Serial);
-
-  delay(200);
-
-  Serial.print(F("\nStarting STM32_MultipleServos on ")); Serial.println(BOARD_NAME);
-  Serial.println(STM32_ISR_SERVO_VERSION);
-
-  //Select STM32 timer USE_STM32_TIMER_NO
-  STM32_ISR_Servos.useTimer(USE_STM32_TIMER_NO);
-
-  for (int index = 0; index < NUM_SERVOS; index++)
-  {
-    ISR_servo[index].servoIndex = STM32_ISR_Servos.setupServo(ISR_servo[index].servoPin, MIN_MICROS, MAX_MICROS);
-
-    if (ISR_servo[index].servoIndex != -1)
-    {
-      Serial.print(F("Setup OK Servo index = ")); Serial.println(ISR_servo[index].servoIndex);
-    }
-    else
-    {
-      Serial.print(F("Setup Failed Servo index = ")); Serial.println(ISR_servo[index].servoIndex);
-    }
-  }
-}
-
-void loop()
-{
-  int position;      // position in degrees
-
-  for (position = 0; position <= 180; position += 5)
-  {
-    // goes from 0 degrees to 180 degrees
-    // in steps of 1 degree
-    for (int index = 0; index < NUM_SERVOS; index++)
-    {
-      STM32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, (position + index * (180 / NUM_SERVOS)) % 180 );
-    }
-    
-    // waits 1s for the servo to reach the position
-    delay(1000);
-  }
-
-  for (position = 180; position >= 0; position -= 5)
-  {
-    // goes from 0 degrees to 180 degrees
-    // in steps of 1 degree
-    for (int index = 0; index < NUM_SERVOS; index++)
-    {
-      STM32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, (position + index * (180 / NUM_SERVOS)) % 180);
-    }
-    
-    // waits 1s for the servo to reach the position
-    delay(1000);
-  }
-
-  delay(5000);
-}
-```
 
 ---
 ---
@@ -425,110 +339,17 @@ void loop()
  4. [ISR_MultiServos](examples/ISR_MultiServos)
  5. [MultipleRandomServos](examples/MultipleRandomServos)
  6. [MultipleServos](examples/MultipleServos)
+ 7. [multiFileProject](examples/multiFileProject)
  
+ 
+---
 ---
 
 ### Example [STM32_ISR_MultiServos](examples/STM32_ISR_MultiServos)
 
+https://github.com/khoih-prog/STM32_ISR_Servo/blob/9dd199de8848543aaaded77abe81e481a96f2fb4/examples/STM32_ISR_MultiServos/STM32_ISR_MultiServos.ino#L42-L136
 
-#### 1. File [STM32_ISR_MultiServos.ino](examples/STM32_ISR_MultiServos/STM32_ISR_MultiServos.ino)
 
-```cpp
-#if !( defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)  ||defined(STM32F4) || defined(STM32F7) || \
-       defined(STM32L0) || defined(STM32L1) || defined(STM32L4) || defined(STM32H7)  ||defined(STM32G0) || defined(STM32G4) || \
-       defined(STM32WB) || defined(STM32MP1) || defined(STM32L5))
-  #error This code is designed to run on STM32F/L/H/G/WB/MP1 platform! Please check your Tools->Board setting.
-#endif
-
-#define TIMER_INTERRUPT_DEBUG       0
-#define ISR_SERVO_DEBUG             1
-
-#include "STM32_ISR_Servo.h"
-
-// Default is TIMER_SERVO (TIM7 for many boards)
-#define USE_STM32_TIMER_NO          TIMER_SERVO
-
-// Published values for SG90 servos; adjust if needed
-#define MIN_MICROS      800  //544
-#define MAX_MICROS      2450
-
-#define SERVO_PIN_1       D6
-#define SERVO_PIN_2       D7
-
-int servoIndex1  = -1;
-int servoIndex2  = -1;
-
-void setup()
-{
-  Serial.begin(115200);
-  while (!Serial);
-
-  delay(500);
-
-  Serial.print(F("\nStarting STM32_ISR_MultiServos on ")); Serial.println(BOARD_NAME);
-  Serial.println(STM32_ISR_SERVO_VERSION);
-  
-  //Select STM32 timer USE_STM32_TIMER_NO
-  STM32_ISR_Servos.useTimer(USE_STM32_TIMER_NO);
-
-  servoIndex1 = STM32_ISR_Servos.setupServo(SERVO_PIN_1, MIN_MICROS, MAX_MICROS);
-  servoIndex2 = STM32_ISR_Servos.setupServo(SERVO_PIN_2, MIN_MICROS, MAX_MICROS);
-
-  if (servoIndex1 != -1)
-    Serial.println(F("Setup Servo1 OK"));
-  else
-    Serial.println(F("Setup Servo1 failed"));
-
-  if (servoIndex2 != -1)
-    Serial.println(F("Setup Servo2 OK"));
-  else
-    Serial.println(F("Setup Servo2 failed"));
-}
-
-void loop()
-{
-  int position;
-
-  if ( ( servoIndex1 != -1) && ( servoIndex2 != -1) )
-  {
-    for (position = 0; position <= 180; position++)
-    {
-      // goes from 0 degrees to 180 degrees
-      // in steps of 1 degree
-
-      if (position % 30 == 0)
-      {
-        Serial.print(F("Servo1 pos = ")); Serial.print(position);
-        Serial.print(F(", Servo2 pos = ")); Serial.println(180 - position);
-      }
-
-      STM32_ISR_Servos.setPosition(servoIndex1, position);
-      STM32_ISR_Servos.setPosition(servoIndex2, 180 - position);
-      // waits 30ms for the servo to reach the position
-      delay(30);
-    }
-    
-    delay(5000);
-
-    for (position = 180; position >= 0; position--)
-    {
-      // goes from 180 degrees to 0 degrees
-      if (position % 30 == 0)
-      {
-        Serial.print(F("Servo1 pos = ")); Serial.print(position);
-        Serial.print(F(", Servo2 pos = ")); Serial.println(180 - position);
-      }
-
-      STM32_ISR_Servos.setPosition(servoIndex1, position);
-      STM32_ISR_Servos.setPosition(servoIndex2, 180 - position);
-      // waits 30ms for the servo to reach the position
-      delay(30);
-    }
-    
-    delay(5000);
-  }
-}
-```
 ---
 ---
 
@@ -539,7 +360,7 @@ void loop()
 
 ```
 Starting STM32_MultipleRandomServos on NUCLEO_F767ZI
-STM32_ISR_Servo v1.0.0
+STM32_ISR_Servo v1.1.0
 [ISR_SERVO] STM32TimerInterrupt: Timer Input Freq (Hz) = 108000000
 [ISR_SERVO] Frequency = 1000000.00 , _count = 10
 [ISR_SERVO] Starting  ITimer OK
@@ -590,7 +411,7 @@ Servos @ 90 degree
 
 ```
 Starting STM32_MultipleRandomServos on NUCLEO_H743ZI2
-STM32_ISR_Servo v1.0.0
+STM32_ISR_Servo v1.1.0
 [ISR_SERVO] STM32TimerInterrupt: Timer Input Freq (Hz) = 240000000
 [ISR_SERVO] Frequency = 1000000.00 , _count = 10
 [ISR_SERVO] Starting  ITimer OK
@@ -702,7 +523,7 @@ Servos sweeps from 0-180 degress
 
 ```
 Starting STM32_ISR_MultiServos on NUCLEO_L552ZE_Q
-STM32_ISR_Servo v1.0.0
+STM32_ISR_Servo v1.1.0
 [ISR_SERVO] STM32TimerInterrupt: Timer Input Freq (Hz) = 110000000
 [ISR_SERVO] Frequency = 1000000.00 , _count = 10
 [ISR_SERVO] Starting  ITimer OK
@@ -757,15 +578,6 @@ Sometimes, the library will only work if you update the board core to the latest
 ---
 ---
 
-## Releases
-
-### Releases v1.0.0
-
-1. Basic 16 ISR-based servo controllers using 1 hardware timer for STM32F/L/H/G/WB/MP1-based board
-2. Tested with **STM32L5 (NUCLEO_L552ZE_Q)** and **STM32H7 (NUCLEO_H743ZI2)**
-
----
----
 
 ### Issues
 
@@ -786,6 +598,11 @@ Submit issues to: [STM32_ISR_Servo issues](https://github.com/khoih-prog/STM32_I
 2. Add functions `getPosition()` and `getPulseWidth()`
 3. Optimize the code
 4. Add more complicated examples
+5. Convert to `h-only` library.
+6. Optimize library code by using `reference-passing` instead of `value-passing`
+7. Improve accuracy by using `float`, instead of `uint32_t` for `position` in degrees
+8. Add example [multiFileProject](examples/multiFileProject) to demo for multiple-file project
+
 
 ---
 ---
