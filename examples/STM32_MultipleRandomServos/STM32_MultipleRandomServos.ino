@@ -5,19 +5,6 @@
 
   Built by Khoi Hoang https://github.com/khoih-prog/STM32_ISR_Servo
   Licensed under MIT license
-
-  Based on SimpleTimer - A timer library for Arduino.
-  Author: mromani@ottotecnica.com
-  Copyright (c) 2010 OTTOTECNICA Italy
-
-  Based on BlynkTimer.h
-  Author: Volodymyr Shymanskyy
-
-  Version: 1.0.0
-
-  Version Modified By   Date      Comments
-  ------- -----------  ---------- -----------
-  1.0.0   K Hoang      15/08/2021 Initial coding for STM32F/L/H/G/WB/MP1
  *****************************************************************************************************************************/
 /****************************************************************************************************************************
    From ESP32 Servo Example Using Arduino ESP32 Servo Library
@@ -60,6 +47,7 @@
 #define TIMER_INTERRUPT_DEBUG       0
 #define ISR_SERVO_DEBUG             1
 
+// To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
 #include "STM32_ISR_Servo.h"
 
 // Default is TIMER_SERVO (TIM7 for many boards)
@@ -69,8 +57,8 @@
 #define MIN_MICROS        800  //544
 #define MAX_MICROS        2450 
 
-#define SERVO_PIN_1       D1
-#define SERVO_PIN_2       D2
+#define SERVO_PIN_1       PA_0   //D1
+#define SERVO_PIN_2       PA_1   //D2
 #define SERVO_PIN_3       D3
 #define SERVO_PIN_4       D4
 #define SERVO_PIN_5       D5
