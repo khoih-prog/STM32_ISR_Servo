@@ -27,7 +27,7 @@
    considerable power, we will connect servo power to the VBat pin of the STM32 (located
    near the USB connector). THIS IS ONLY APPROPRIATE FOR SMALL SERVOS.
 
-   We could also connect servo power to a separate external power source (as long as we connect all of 
+   We could also connect servo power to a separate external power source (as long as we connect all of
    the grounds (STM32, servo, and external power).
    In this example, we just connect STM32 ground to servo ground. The servo signal pins
    connect to any available GPIO pins on the STM32 (in this example, we use pins (D1-D6).
@@ -42,7 +42,7 @@
 #if !( defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)  ||defined(STM32F4) || defined(STM32F7) || \
        defined(STM32L0) || defined(STM32L1) || defined(STM32L4) || defined(STM32H7)  ||defined(STM32G0) || defined(STM32G4) || \
        defined(STM32WB) || defined(STM32MP1) || defined(STM32L5))
-  #error This code is designed to run on STM32F/L/H/G/WB/MP1 platform! Please check your Tools->Board setting.
+#error This code is designed to run on STM32F/L/H/G/WB/MP1 platform! Please check your Tools->Board setting.
 #endif
 
 #define TIMER_INTERRUPT_DEBUG       0
@@ -73,32 +73,34 @@ typedef struct
 
 #if ( defined(STM32L0) || defined(STM32L1) || defined(STM32L4) || defined(STM32L5) )
 
-  #define NUM_SERVOS        3
-  
-  ISR_servo_t ISR_servo[NUM_SERVOS] =
-  {
-    { -1, SERVO_PIN_1 }, { -1, SERVO_PIN_2 }, { -1, SERVO_PIN_3 }
-  };
+#define NUM_SERVOS        3
+
+ISR_servo_t ISR_servo[NUM_SERVOS] =
+{
+  { -1, SERVO_PIN_1 }, { -1, SERVO_PIN_2 }, { -1, SERVO_PIN_3 }
+};
 
 #else
 
-  #define NUM_SERVOS        6
+#define NUM_SERVOS        6
 
-  ISR_servo_t ISR_servo[NUM_SERVOS] =
-  {
-    { -1, SERVO_PIN_1 }, { -1, SERVO_PIN_2 }, { -1, SERVO_PIN_3 }, { -1, SERVO_PIN_4 }, { -1, SERVO_PIN_5 }, { -1, SERVO_PIN_6 }
-  };
+ISR_servo_t ISR_servo[NUM_SERVOS] =
+{
+  { -1, SERVO_PIN_1 }, { -1, SERVO_PIN_2 }, { -1, SERVO_PIN_3 }, { -1, SERVO_PIN_4 }, { -1, SERVO_PIN_5 }, { -1, SERVO_PIN_6 }
+};
 
 #endif
 
 void setup()
 {
   Serial.begin(115200);
+
   while (!Serial);
 
   delay(200);
 
-  Serial.print(F("\nStarting MultipleServos on ")); Serial.println(BOARD_NAME);
+  Serial.print(F("\nStarting MultipleServos on "));
+  Serial.println(BOARD_NAME);
   Serial.println(STM32_ISR_SERVO_VERSION);
 
   //Select STM32 timer USE_STM32_TIMER_NO
@@ -110,11 +112,13 @@ void setup()
 
     if (ISR_servo[index].servoIndex != -1)
     {
-      Serial.print(F("Setup OK Servo index = ")); Serial.println(ISR_servo[index].servoIndex);
+      Serial.print(F("Setup OK Servo index = "));
+      Serial.println(ISR_servo[index].servoIndex);
     }
     else
     {
-      Serial.print(F("Setup Failed Servo index = ")); Serial.println(ISR_servo[index].servoIndex);
+      Serial.print(F("Setup Failed Servo index = "));
+      Serial.println(ISR_servo[index].servoIndex);
     }
   }
 }
@@ -131,7 +135,7 @@ void loop()
     {
       STM32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, (position + index * (180 / NUM_SERVOS)) % 180 );
     }
-    
+
     // waits 1s for the servo to reach the position
     delay(1000);
   }
@@ -144,7 +148,7 @@ void loop()
     {
       STM32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, (position + index * (180 / NUM_SERVOS)) % 180);
     }
-    
+
     // waits 1s for the servo to reach the position
     delay(1000);
   }

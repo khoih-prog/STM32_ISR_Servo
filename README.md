@@ -6,8 +6,11 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
 [![GitHub issues](https://img.shields.io/github/issues/khoih-prog/STM32_ISR_Servo.svg)](http://github.com/khoih-prog/STM32_ISR_Servo/issues)
 
+
 <a href="https://www.buymeacoffee.com/khoihprog6" title="Donate to my libraries using BuyMeACoffee"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Donate to my libraries using BuyMeACoffee" style="height: 50px !important;width: 181px !important;" ></a>
 <a href="https://www.buymeacoffee.com/khoihprog6" title="Donate to my libraries using BuyMeACoffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-orange.svg?logo=buy-me-a-coffee&logoColor=FFDD00" style="height: 20px !important;width: 200px !important;" ></a>
+<a href="https://profile-counter.glitch.me/khoih-prog/count.svg" title="Total khoih-prog Visitor count"><img src="https://profile-counter.glitch.me/khoih-prog/count.svg" style="height: 30px;width: 200px;"></a>
+<a href="https://profile-counter.glitch.me/khoih-prog-STM32_ISR_Servo/count.svg" title="STM32_ISR_Servo Visitor count"><img src="https://profile-counter.glitch.me/khoih-prog-STM32_ISR_Servo/count.svg" style="height: 30px;width: 200px;"></a>
 
 ---
 ---
@@ -120,7 +123,7 @@ This library enables you to use `1 Hardware Timer` on an STM32F/L/H/G/WB/MP1-bas
 ## Prerequisites
 
 1. [`Arduino IDE 1.8.19+` for Arduino](https://github.com/arduino/Arduino). [![GitHub release](https://img.shields.io/github/release/arduino/Arduino.svg)](https://github.com/arduino/Arduino/releases/latest)
-2. [`Arduino Core for STM32 v2.2.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32F/L/H/G/WB/MP1 boards. [![GitHub release](https://img.shields.io/github/release/stm32duino/Arduino_Core_STM32.svg)](https://github.com/stm32duino/Arduino_Core_STM32/releases/latest)
+2. [`Arduino Core for STM32 v2.3.0+`](https://github.com/stm32duino/Arduino_Core_STM32) for STM32F/L/H/G/WB/MP1 boards. [![GitHub release](https://img.shields.io/github/release/stm32duino/Arduino_Core_STM32.svg)](https://github.com/stm32duino/Arduino_Core_STM32/releases/latest)
 
 ---
 ---
@@ -157,14 +160,14 @@ The current library implementation, using `xyz-Impl.h` instead of standard `xyz.
 
 You can include this `.hpp` file
 
-```
+```cpp
 // Can be included as many times as necessary, without `Multiple Definitions` Linker Error
 #include "STM32_ISR_Servo.hpp"     //https://github.com/khoih-prog/STM32_ISR_Servo
 ```
 
 in many files. But be sure to use the following `.h` file **in just 1 `.h`, `.cpp` or `.ino` file**, which must **not be included in any other file**, to avoid `Multiple Definitions` Linker Error
 
-```
+```cpp
 // To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
 #include "STM32_ISR_Servo.h"           //https://github.com/khoih-prog/STM32_ISR_Servo
 ```
@@ -202,7 +205,7 @@ For example, **STM32F103C8T6** has one advance timer, while **STM32F103VET6** ha
 
 
 <p align="center">
-    <img src="https://github.com/khoih-prog/STM32_TimerInterrupt/blob/main/pics/STM32Timers.png">
+    <img src="https://github.com/khoih-prog/STM32_TimerInterrupt/raw/main/pics/STM32Timers.png">
 </p>
 
 
@@ -214,7 +217,7 @@ To be sure which Timer is available for the board you're using, check the Core P
 
 The information will be as follows:
 
-```
+```cpp
 typedef struct
 {
   __IO uint32_t CR1;         /*!< TIM control register 1,              Address offset: 0x00 */
@@ -249,7 +252,7 @@ typedef struct
 
 and
 
-```
+```cpp
 #define PERIPH_BASE            0x40000000UL /*!< Base address of : AHB/ABP Peripherals   
 /*!< Peripheral memory map */
 #define APB1PERIPH_BASE        PERIPH_BASE
@@ -295,7 +298,7 @@ and
 
 ### New functions
 
-```
+```cpp
 // returns last position in degrees if success, or -1 on wrong servoIndex
 int getPosition(unsigned servoIndex);
 
@@ -358,7 +361,7 @@ https://github.com/khoih-prog/STM32_ISR_Servo/blob/9dd199de8848543aaaded77abe81e
 ### 1. STM32_MultipleRandomServos on NUCLEO_F767ZI
 
 
-```
+```cpp
 Starting STM32_MultipleRandomServos on NUCLEO_F767ZI
 STM32_ISR_Servo v1.1.0
 [ISR_SERVO] STM32TimerInterrupt: Timer Input Freq (Hz) = 108000000
@@ -409,7 +412,7 @@ Servos @ 90 degree
 ### 2. STM32_MultipleRandomServos on NUCLEO_H743ZI2
 
 
-```
+```cpp
 Starting STM32_MultipleRandomServos on NUCLEO_H743ZI2
 STM32_ISR_Servo v1.1.0
 [ISR_SERVO] STM32TimerInterrupt: Timer Input Freq (Hz) = 240000000
@@ -521,7 +524,7 @@ Servos sweeps from 0-180 degrees
 
 ### 3. STM32_ISR_MultiServos on NUCLEO_L552ZE_Q
 
-```
+```cpp
 Starting STM32_ISR_MultiServos on NUCLEO_L552ZE_Q
 STM32_ISR_Servo v1.1.0
 [ISR_SERVO] STM32TimerInterrupt: Timer Input Freq (Hz) = 110000000
@@ -602,7 +605,7 @@ Submit issues to: [STM32_ISR_Servo issues](https://github.com/khoih-prog/STM32_I
 6. Optimize library code by using `reference-passing` instead of `value-passing`
 7. Improve accuracy by using `float`, instead of `uint32_t` for `position` in degrees
 8. Add example [multiFileProject](examples/multiFileProject) to demo for multiple-file project
-
+9. Add astyle using `allman` style. Restyle the library
 
 ---
 ---
@@ -632,4 +635,4 @@ If you want to contribute to this project:
 
 ## Copyright
 
-Copyright 2021- Khoi Hoang
+Copyright (c) 2021- Khoi Hoang

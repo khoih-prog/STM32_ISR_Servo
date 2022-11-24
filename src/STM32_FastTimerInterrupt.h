@@ -29,7 +29,7 @@
 #if !( defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)  ||defined(STM32F4) || defined(STM32F7) || \
        defined(STM32L0) || defined(STM32L1) || defined(STM32L4) || defined(STM32H7)  ||defined(STM32G0) || defined(STM32G4) || \
        defined(STM32WB) || defined(STM32MP1) || defined(STM32L5))
-  #error This code is designed to run on STM32F/L/H/G/WB/MP1 platform! Please check your Tools->Board setting.
+#error This code is designed to run on STM32F/L/H/G/WB/MP1 platform! Please check your Tools->Board setting.
 #endif
 
 #include "STM32_ISR_Servo_Debug.h"
@@ -46,10 +46,10 @@ typedef void (*stm32_timer_callback)  ();
 class STM32FastTimerInterrupt
 {
   private:
-  
+
     TIM_TypeDef*    _timer;
     HardwareTimer*  _hwTimer = NULL;
-    
+
     stm32_timer_callback _callback;        // pointer to the callback function
     float             _frequency;       // Timer frequency
     uint64_t          _timerCount;      // count to activate timer
@@ -57,16 +57,16 @@ class STM32FastTimerInterrupt
   public:
 
     STM32FastTimerInterrupt(TIM_TypeDef* timer)
-    {              
+    {
       _timer = timer;
-      
+
       _hwTimer = new HardwareTimer(_timer);
-           
+
       _frequency  = 0;
       _timerCount = 0;
-      _callback = NULL;      
+      _callback = NULL;
     };
-    
+
     ~STM32FastTimerInterrupt()
     {
       if (_hwTimer)
@@ -81,7 +81,7 @@ class STM32FastTimerInterrupt
       // Will use later if very low frequency is needed.
       _frequency  = 1000000;
       _timerCount = (uint32_t) _frequency / frequency;
-      
+
       ISR_SERVO_LOGERROR1(F("STM32TimerInterrupt: Timer Input Freq (Hz) ="), _hwTimer->getTimerClkFreq());
       ISR_SERVO_LOGERROR3(F("Frequency ="), _frequency, F(", _count ="), (uint32_t) (_timerCount));
 

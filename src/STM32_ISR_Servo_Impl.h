@@ -34,7 +34,7 @@ static STM32_ISR_Servo STM32_ISR_Servos;  // create servo object to control up t
 
 
 void STM32_ISR_Servo_Handler()
-{ 
+{
   STM32_ISR_Servos.run();
 }
 
@@ -137,10 +137,11 @@ bool STM32_ISR_Servo::setPosition(const uint8_t& servoIndex, const float& positi
   if ( servo[servoIndex].enabled && (servo[servoIndex].pin <= STM32_MAX_PIN) )
   {
     servo[servoIndex].position  = position;
-    servo[servoIndex].count     = map(position, 0, 180, servo[servoIndex].min, servo[servoIndex].max) / TIMER_INTERVAL_MICRO;
+    servo[servoIndex].count     = map(position, 0, 180, servo[servoIndex].min,
+                                      servo[servoIndex].max) / TIMER_INTERVAL_MICRO;
 
     ISR_SERVO_LOGDEBUG1("Idx =", servoIndex);
-    ISR_SERVO_LOGDEBUG3("cnt =", servo[servoIndex].count, ", pos =",servo[servoIndex].position);
+    ISR_SERVO_LOGDEBUG3("cnt =", servo[servoIndex].count, ", pos =", servo[servoIndex].position);
 
     return true;
   }
@@ -159,7 +160,7 @@ float STM32_ISR_Servo::getPosition(const uint8_t& servoIndex)
   if ( servo[servoIndex].enabled && (servo[servoIndex].pin <= STM32_MAX_PIN) )
   {
     ISR_SERVO_LOGERROR1("Idx =", servoIndex);
-    ISR_SERVO_LOGERROR3("cnt =", servo[servoIndex].count, ", pos =",servo[servoIndex].position);
+    ISR_SERVO_LOGERROR3("cnt =", servo[servoIndex].count, ", pos =", servo[servoIndex].position);
 
     return (servo[servoIndex].position);
   }
@@ -209,7 +210,7 @@ uint16_t STM32_ISR_Servo::getPulseWidth(const uint8_t& servoIndex)
   if ( servo[servoIndex].enabled && (servo[servoIndex].pin <= STM32_MAX_PIN) )
   {
     ISR_SERVO_LOGERROR1("Idx =", servoIndex);
-    ISR_SERVO_LOGERROR3("cnt =", servo[servoIndex].count, ", pos =",servo[servoIndex].position);
+    ISR_SERVO_LOGERROR3("cnt =", servo[servoIndex].count, ", pos =", servo[servoIndex].position);
 
     return (servo[servoIndex].count * TIMER_INTERVAL_MICRO );
   }
@@ -296,8 +297,8 @@ void STM32_ISR_Servo::enableAll()
 
   for (uint8_t servoIndex = 0; servoIndex < MAX_SERVOS; servoIndex++)
   {
-    if ( (servo[servoIndex].count >= servo[servoIndex].min / TIMER_INTERVAL_MICRO ) && !servo[servoIndex].enabled 
-      && (servo[servoIndex].pin <= STM32_MAX_PIN) )
+    if ( (servo[servoIndex].count >= servo[servoIndex].min / TIMER_INTERVAL_MICRO ) && !servo[servoIndex].enabled
+         && (servo[servoIndex].pin <= STM32_MAX_PIN) )
     {
       servo[servoIndex].enabled = true;
     }

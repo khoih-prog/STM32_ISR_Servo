@@ -27,7 +27,7 @@
    considerable power, we will connect servo power to the VBat pin of the STM32 (located
    near the USB connector). THIS IS ONLY APPROPRIATE FOR SMALL SERVOS.
 
-   We could also connect servo power to a separate external power source (as long as we connect all of 
+   We could also connect servo power to a separate external power source (as long as we connect all of
    the grounds (STM32, servo, and external power).
    In this example, we just connect STM32 ground to servo ground. The servo signal pins
    connect to any available GPIO pins on the STM32 (in this example, we use pins (D1-D6).
@@ -42,7 +42,7 @@
 #if !( defined(STM32F0) || defined(STM32F1) || defined(STM32F2) || defined(STM32F3)  ||defined(STM32F4) || defined(STM32F7) || \
        defined(STM32L0) || defined(STM32L1) || defined(STM32L4) || defined(STM32H7)  ||defined(STM32G0) || defined(STM32G4) || \
        defined(STM32WB) || defined(STM32MP1) || defined(STM32L5))
-  #error This code is designed to run on STM32F/L/H/G/WB/MP1 platform! Please check your Tools->Board setting.
+#error This code is designed to run on STM32F/L/H/G/WB/MP1 platform! Please check your Tools->Board setting.
 #endif
 
 #define TIMER_INTERRUPT_DEBUG       0
@@ -67,11 +67,13 @@ int servoIndex2  = -1;
 void setup()
 {
   Serial.begin(115200);
+
   while (!Serial);
 
   delay(200);
 
-  Serial.print(F("\nStarting ISR_MultiServos on ")); Serial.println(BOARD_NAME);
+  Serial.print(F("\nStarting ISR_MultiServos on "));
+  Serial.println(BOARD_NAME);
   Serial.println(STM32_ISR_SERVO_VERSION);
 
   //Select STM32 timer USE_STM32_TIMER_NO
@@ -104,8 +106,10 @@ void loop()
 
       if (position % 30 == 0)
       {
-        Serial.print(F("Servo1 pos = ")); Serial.print(position);
-        Serial.print(F(", Servo2 pos = ")); Serial.println(180 - position);
+        Serial.print(F("Servo1 pos = "));
+        Serial.print(position);
+        Serial.print(F(", Servo2 pos = "));
+        Serial.println(180 - position);
       }
 
       STM32_ISR_Servos.setPosition(servoIndex1, position);
@@ -113,7 +117,7 @@ void loop()
       // waits 30ms for the servo to reach the position
       delay(30);
     }
-    
+
     delay(5000);
 
     for (position = 180; position >= 0; position--)
@@ -121,8 +125,10 @@ void loop()
       // goes from 180 degrees to 0 degrees
       if (position % 30 == 0)
       {
-        Serial.print(F("Servo1 pos = ")); Serial.print(position);
-        Serial.print(F(", Servo2 pos = ")); Serial.println(180 - position);
+        Serial.print(F("Servo1 pos = "));
+        Serial.print(position);
+        Serial.print(F(", Servo2 pos = "));
+        Serial.println(180 - position);
       }
 
       STM32_ISR_Servos.setPosition(servoIndex1, position);
@@ -130,7 +136,7 @@ void loop()
       // waits 30ms for the servo to reach the position
       delay(30);
     }
-    
+
     delay(5000);
   }
 }
